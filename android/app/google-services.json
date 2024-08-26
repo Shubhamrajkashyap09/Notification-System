@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "169193884453",
+    "project_id": "testapi-88084",
+    "storage_bucket": "testapi-88084.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169193884453:android:a3327d61c9059350f8e8cc",
+        "android_client_info": {
+          "package_name": "com.example.notification_service_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBna2R30nmyPTy93wGTOWrmbBSJauE7zTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
