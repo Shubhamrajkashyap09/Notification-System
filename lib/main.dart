@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:notification_service_app/firebase_options.dart';
+import 'package:notification_service_app/notification_services.dart';
 
 void main() async {
   WidgetsFlutterBinding
@@ -10,8 +12,19 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  print('Title2 : ${message.notification!.title.toString()}');
+  print('Body2 : ${message.notification!.body.toString()}');
+  NotificationServices().showNotification(message);
 }
 
 class CustomOutlinedButton extends StatelessWidget {
@@ -82,7 +95,25 @@ class CustomOutlinedButton extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  NotificationServices notificationServices = NotificationServices();
+
+  @override
+  void initState() {
+    super.initState();
+    notificationServices.requestNotificationPermision();
+    notificationServices.firebaseInit();
+    // notificationServices.isTokenRefresh();
+    notificationServices
+        .getDeviceToken()
+        .then((value) => print("Device token : $value"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -96,6 +127,9 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
               Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
